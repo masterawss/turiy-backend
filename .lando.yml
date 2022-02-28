@@ -1,0 +1,10 @@
+name: turiy
+recipe: mean
+config:
+  node: 16
+  build:
+    - npm install
+  command: npm start
+  database: mongo:5.0
+  port: '80'
+  ssl: false
