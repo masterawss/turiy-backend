@@ -43,3 +43,7 @@ export const register = async (req: Request, res: Response) => {
         token
     })
 }
+
+export const getUser = async(req: Request, res: Response) => {
+    res.json({user: req.user})
+}

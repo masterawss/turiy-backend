@@ -16,6 +16,7 @@ root.group('/', route => {
     route.group('/auth', auth => {
         auth.post('/login', requestValidator(AuthSchema.loginSchema), AuthController.login )
         auth.post('/register',  AuthController.register )
+        auth.get('/user', authMiddleware, AuthController.getUser )
     })
 
     route.group('/home',  home => {
@@ -25,7 +26,6 @@ root.group('/', route => {
     // MADAY - PEDRO
     route.group('/places', place => {
         place.resource({handlers: new PlaceController()})
-
     })
     
     // USER - GUIA -> MADAY - JULIO
