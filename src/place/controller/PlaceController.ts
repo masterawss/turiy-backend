@@ -2,11 +2,22 @@ import { NextFunction, Request, Response } from 'express';
 import Place from '../entity/models/placeModel'
 
 export default class PlaceController {
-    // GET: /products
-    index = async (req: Request, res: Response, next: NextFunction) => {};
+    // GET: /place
+    index = async (req: Request, res: Response, next: NextFunction) => {
+        
+    };
 
-    // GET: /products/:productId
-    find = async (req: Request, res: Response, next: NextFunction) => {};
+    // GET: /places/:placeId
+    find = async (req: Request, res: Response, next: NextFunction) => {
+        //Retornar el Json de 1 sólo idPlace
+
+        //Obtener el id
+        const pladeId = req.params.placeId;
+        //Buscar en la BD segun id
+        const place = await Place.findById(pladeId);
+        res.json(place)
+
+    };
 
     create = async (req: Request, res: Response, next: NextFunction) => {
         try {

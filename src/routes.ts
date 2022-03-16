@@ -3,6 +3,7 @@ import RouteGroup from 'express-route-grouping';
 import PlaceController from './place/controller/PlaceController'
 import GuideController from './guide/controller/GuideController'
 import * as HomeController from './home/controller/HomeController'
+import ReviewController from './place/controller/ReviewController';
 const root = new RouteGroup('/', Router());
 
 root.group('/', route => {
@@ -15,6 +16,13 @@ root.group('/', route => {
     // MADAY - PEDRO
     route.group('/places', place => {
         place.resource({handlers: new PlaceController()})
+        //Publication             
+    })
+
+    // /places/review
+    //Review
+    route.group('/reviews', review => {
+        review.resource({handlers: new ReviewController()})
     })
     
     // USER - GUIA -> MADAY - JULIO
@@ -22,5 +30,7 @@ root.group('/', route => {
         place.resource({handlers: new GuideController()})
     })
 })
+
+
 
 export default root.export()
