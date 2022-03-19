@@ -18,6 +18,8 @@ root.group('/', route => {
         auth.post('/login', requestValidator(AuthSchema.loginSchema), AuthController.login )
         auth.post('/register',  AuthController.register )
         auth.get('/user', authMiddleware, AuthController.getUser )
+
+        auth.post('/register-guide', authMiddleware, AuthController.registerGuide)
     })
 
     route.group('/home',  home => {
@@ -33,6 +35,7 @@ root.group('/', route => {
     route.group('/users', user => {
         user.resource({handlers: new UserController()})
     })
+    
 })
 
 export default root.export()

@@ -2,6 +2,7 @@ import { LoginUser } from 'auth/types';
 import { NextFunction, Request, Response } from 'express';
 import UserModel from '../../user/entity/models/UserModel';
 import {createAuthToken} from '../utils/TokenManager';
+import  mercadopago from 'mercadopago';
 
 export const login = async (req: Request, res: Response) => { 
     // VALIDAR USUARIO POR EMAIL
@@ -46,4 +47,41 @@ export const register = async (req: Request, res: Response) => {
 
 export const getUser = async(req: Request, res: Response) => {
     res.json({user: req.user})
+}
+
+export const registerGuide = async(req: Request, res: Response) => {
+    mercadopago.configure({
+      access_token: process.env.MP_ACCESS_TOKEN!,
+    });
+
+    // Crea un objeto de preferencia
+    let preference = {
+      items: [
+        {
+          title: "Suscripción Turiy - Guide",
+          unit_price: 40,
+          quantity: 1,
+        },
+      ],
+      // payer: {
+      //   name: req.user?.name,
+      //   email: "user@email.com",
+      // },
+      back_urls: {
+        success: process.env.WEB_URL+'/checkout-success',
+        failure: process.env.WEB_URL+'/checkout-failure',
+        pending: process.env.WEB_URL+'/checkout-pending'
+      },
+    };
+
+    mercadopago.preferences
+      .create(preference)
+      .then(function (response:any) {
+        // console.log('RESPUESTA DE MERCADO PAGO', response);
+        res.json(response.response.init_point);
+        // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+      })
+      .catch(function (error:any) {
+        console.log(error);
+      });
 }
