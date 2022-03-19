@@ -3,15 +3,10 @@ import placeModel from '../entity/models/placeModel';
 import Place from '../entity/models/placeModel'
 
 export default class PlaceController {
-    // GET: /products
-    // index = async (req: Request, res: Response, next: NextFunction) => {
-    //     const places = await placeModel.find({})
-    //     res.send(places)
-    // };
-
-    // GET: /products/:productId
     find = async (req: Request, res: Response, next: NextFunction) => {
-        const place = await placeModel.findOne({id: '620c6b4191bdec2ec4e7d8d7'})
+        const place = await placeModel
+                        .findById(req.params.placeId)
+                        .populate("guides")
 
         res.send(place)
     };

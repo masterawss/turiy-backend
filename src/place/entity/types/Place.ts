@@ -11,6 +11,8 @@ export interface Place {
   stars: number;
 
   coordinates: CoordinateType;
+
+  guides: any;
 }
 
 export type ID = {

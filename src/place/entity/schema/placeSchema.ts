@@ -25,7 +25,13 @@ export const PlaceSchemma = new Schema<Place>({
   coordinates: {
     type: Object,
     required: true
-  }
+  },
+  guides: [
+    {
+      type: Types.ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 // PlaceSchemma.virtual('tasks', {

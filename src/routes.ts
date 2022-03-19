@@ -7,6 +7,7 @@ import * as HomeController from './home/controller/HomeController'
 import authMiddleware from './shared/middleware/authMiddleware';
 import requestValidator from './shared/middleware/requestValidatorMiddleware';
 import * as AuthSchema from './auth/Request/AuthSchema'
+import UserController from './user/controller/UserController';
 
 const root = new RouteGroup('/', Router());
 
@@ -29,8 +30,8 @@ root.group('/', route => {
     })
     
     // USER - GUIA -> MADAY - JULIO
-    route.group('/guides', place => {
-        place.resource({handlers: new GuideController()})
+    route.group('/users', user => {
+        user.resource({handlers: new UserController()})
     })
 })
 
