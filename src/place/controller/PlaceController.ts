@@ -1,24 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
+import placeModel from '../entity/models/placeModel';
 import Place from '../entity/models/placeModel'
 
 export default class PlaceController {
-    // GET: /place
-    index = async (req: Request, res: Response, next: NextFunction) => {
-        
-    };
-
-    // GET: /places/:placeId
     find = async (req: Request, res: Response, next: NextFunction) => {
-        //Retornar el Json de 1 sólo idPlace
+        const place = await placeModel
+                        .findById(req.params.placeId)
+                        .populate("guides")
 
-        //Obtener el id
-        const pladeId = req.params.placeId;
-        //Buscar en la BD segun id
-        const place = await Place.findById(pladeId);
-        res.json(place)
-
+        res.send(place)
     };
 
+    // PARA CREAR DESDE POSTMAN
     create = async (req: Request, res: Response, next: NextFunction) => {
         try {
             let place = await Place.create(req.body)
@@ -29,10 +22,15 @@ export default class PlaceController {
         }
     }
 
-    // PUT: /products/:productId
-    update = async (req: Request, res: Response, next: NextFunction) => {};
+    // // PUT: /products/:productId
+    // update = async (req: Request, res: Response, next: NextFunction) => {};
 
-    // DELETE: /products/:productId
-    delete = async (req: Request, res: Response, next: NextFunction) => {};
+    // // DELETE: /products/:productId
+    // delete = async (req: Request, res: Response, next: NextFunction) => {};
 
 }
+
+export const obtenerTodos = async (req: Request, res: Response, next: NextFunction) => {
+    const places = await placeModel.find({})
+    res.send(places)
+};

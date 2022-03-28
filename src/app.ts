@@ -32,5 +32,6 @@ import express, {
   //     .status(err.statusCode ? err.statusCode : 500)
   //     .send({ message: err.message, type: err.errorType });
   // });
+
   
   export default app;
