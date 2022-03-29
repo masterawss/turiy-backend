@@ -9,10 +9,6 @@ export default class PlaceController {
         const place = await placeModel
                         .findById(id)
                         .populate("guides")
-        
-        console.log('id', id)
-        console.log(publications)
-        console.log(place)
         res.json({place, publications})
     };
 
