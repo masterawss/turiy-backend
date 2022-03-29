@@ -6,6 +6,7 @@ export interface Publications {
   date: string;
   description: string;
   imagenes: Array<any>;
+  place: any
 }
 
 export type ID = {

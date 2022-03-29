@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import publicationsModel from '../entity/models/publicationsModel';
 
+
 export default class PublicationsController {
     find = async (req: Request, res: Response, next: NextFunction) => {
         const publications = await publicationsModel

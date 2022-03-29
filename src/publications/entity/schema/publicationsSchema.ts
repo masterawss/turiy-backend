@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose';
 import { Publications } from '../types/Publications';
 import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 
 export const PublicationsSchemma = new Schema<Publications>({
   title: {
@@ -15,6 +16,10 @@ export const PublicationsSchemma = new Schema<Publications>({
   },
   imagenes: {
     type: [],
+  },
+  place: {
+    type: Schema.Types.ObjectId,
+    ref: 'places'
   }
 });
 
