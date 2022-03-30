@@ -8,6 +8,10 @@ export default class PublicationsController {
                         .find({})
         res.json(publications)
     };
+    create = async (req: Request, res: Response, next: NextFunction) => {
+        const publication = await publicationsModel.create(req.body);
+        res.send('publication created')      
+    };
 
     // // PUT: /products/:productId
     // update = async (req: Request, res: Response, next: NextFunction) => {};

@@ -26,7 +26,13 @@ export const UserSchemma = new Schema({
     },
     path_avatar: {
         type: String,
-    }
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'reviews'
+        }
+    ]
 });
 
 

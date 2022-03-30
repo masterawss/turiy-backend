@@ -2,11 +2,11 @@ import { Types } from 'mongoose';
 
 export interface Publications {
   id: ID;
-  title: string;
+  userName: string;
   date: string;
   description: string;
   imagenes: Array<any>;
-  place: any
+  placeId: any
 }
 
 export type ID = {

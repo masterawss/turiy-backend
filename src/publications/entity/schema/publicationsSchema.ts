@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import mongoose from 'mongoose';
 
 export const PublicationsSchemma = new Schema<Publications>({
-  title: {
+  userName: {
     type: String,
     required: true
   },
@@ -17,7 +17,7 @@ export const PublicationsSchemma = new Schema<Publications>({
   imagenes: {
     type: [],
   },
-  place: {
+  placeId: {
     type: Schema.Types.ObjectId,
     ref: 'places'
   }
