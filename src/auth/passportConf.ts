@@ -14,7 +14,7 @@ const opts = {
 
 passportConf.use(new JwtStrategy(opts, function(jwt_payload, done) {
     console.log('USER ID', jwt_payload);
-    UserModel.findOne({id: jwt_payload.id}, function(err: any, user: any) {
+    UserModel.findById(jwt_payload.id, function(err: any, user: any) {
         if (err) {
             return done(err, false);
         }
