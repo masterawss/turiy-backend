@@ -105,7 +105,7 @@ export const registerGuide = async(req: Request, res: Response) => {
         failure: process.env.WEB_URL+'/checkout-failure',
         pending: process.env.WEB_URL+'/checkout-pending'
       },
-    };
+  };
 
     mercadopago.preferences
       .create(preference)
