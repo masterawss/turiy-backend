@@ -3,6 +3,30 @@ import { NextFunction, Request, Response } from 'express';
 import UserModel from '../../user/entity/models/UserModel';
 import {createAuthToken} from '../utils/TokenManager';
 import  mercadopago from 'mercadopago';
+import sgMail from '@sendgrid/mail';
+
+sgMail.setApiKey("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");
+const msg = {
+  to: 'leftmine05@gmail.com',
+  from: 'julio@vitplanet.com', // Use the email address or domain you verified above
+  subject: 'Notificacion de Turiy',
+  text: 'Bienbenido a Turiy',
+  html: '<strong>Tenemos mucho por ver</strong>',
+};
+
+export const sendEmail = async () => {
+  try {
+    await sgMail.send(msg);
+  } catch (error: any) {
+    console.error(error);
+
+    if (error.response) {
+      console.error(error.response.body);
+    }
+  }
+};
+
+
 
 export const login = async (req: Request, res: Response) => { 
     // VALIDAR USUARIO POR EMAIL
@@ -15,6 +39,12 @@ export const login = async (req: Request, res: Response) => {
         console.log('USUARIO', is_valid_password);
         return res.status(401).json({message: 'Email o contraseña incorrecta'})
     }
+
+    try {
+      var main = await sendEmail(); //Neo
+        } catch (err) {
+        
+        }
 
     // GENERAR TOKEN
     const token = createAuthToken({id: user.id})
@@ -37,6 +67,7 @@ export const register = async (req: Request, res: Response) => {
     })
 
     console.log('USUARIO REGISTRADO', user);
+  
     
     // GENERAR TOKEN
     const token = createAuthToken({id: user.id})
@@ -49,44 +80,41 @@ export const getUser = async(req: Request, res: Response) => {
     res.json({user: req.user})
 }
 
-export const registerGuide = async(req: any, res: Response) => {
-  
-  mercadopago.configure({
-    access_token: process.env.MP_ACCESS_TOKEN!,
-  });
+export const registerGuide = async(req: Request, res: Response) => {
 
-  
-  // Crea un objeto de preferencia
-  let preference = {
-    items: [
-      {
-        title: "Suscripción Turiy - Guide",
-        unit_price: 40,
-        quantity: 1,
-      },
-    ],
+  const user = await UserModel.findOne({email: req.body.email});
+    mercadopago.configure({
+      access_token: process.env.MP_ACCESS_TOKEN!,
+    });
+
+    // Crea un objeto de preferencia
+    let preference = {
+      items: [
+        {
+          title: "Suscripción Turiy - Guide",
+          unit_price: 40,
+          quantity: 1,
+        },
+      ],
     // payer: {
-    //   name: req.user?.name,
-    //   email: "user@email.com",
-    // },
-    back_urls: {
-      success: process.env.WEB_URL+'/checkout-success',
-      failure: process.env.WEB_URL+'/checkout-failure',
-      pending: process.env.WEB_URL+'/checkout-pending'
-    },
+      //  name: user.mail,
+      //  email: user.mail,
+      // },
+      back_urls: {
+        success: process.env.WEB_URL+'/checkout-success',
+        failure: process.env.WEB_URL+'/checkout-failure',
+        pending: process.env.WEB_URL+'/checkout-pending'
+      },
   };
 
-  mercadopago.preferences
-    .create(preference)
-    .then(async (response:any) => {
-    // ACTUALIZA AL USUARIO Y PONER TYPE = Guide
-      // const {id} = req.user
-      await UserModel
-        .findById(req.user?.id)
-        .update({type: 'Guide'})
-      res.json(response.response.init_point);
-    })
-    .catch(function (error:any) {
-      console.log(error);
-    });
+    mercadopago.preferences
+      .create(preference)
+      .then(function (response:any) {
+        console.log('RESPUESTA DE MERCADO PAGO', response);
+        res.json(response.response.init_point);
+        // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+      })
+      .catch(function (error:any) {
+        console.log(error);
+      });
 }
