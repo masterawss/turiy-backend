@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import User from '../entity/models/UserModel'
+import User from '../entity/models/UserModel';
+import reviewsModel from '../../reviews/entity/models/ReviewsModel'
 
 export default class UserController {
     find = async (req: Request, res: Response, next: NextFunction) => {
+        const reviews = await reviewsModel.find({userId: req.params.userId })
         const user = await User
             .findById(req.params.userId)
-        res.send(user)
+        res.json({user,reviews})
     };
 
     // PARA CREAR DESDE POSTMAN
