@@ -4,11 +4,16 @@ import UserModel from '../../user/entity/models/UserModel';
 import {createAuthToken} from '../utils/TokenManager';
 import  mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
+import dotenv from 'dotenv';
+dotenv.config();
 
-sgMail.setApiKey("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");
+
+
+sgMail.setApiKey(`${process.env.SENDGRID_API_KEY}`);
+//sgMail.setApiKey("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");
 const msg = {
   to: 'leftmine05@gmail.com',
-  from: 'julio@vitplanet.com', // Use the email address or domain you verified above
+  from: 'info@vitplanet.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
   text: 'Bienbenido a Turiy',
   html: '<strong>Tenemos mucho por ver</strong>',
@@ -40,8 +45,8 @@ export const login = async (req: Request, res: Response) => {
         return res.status(401).json({message: 'Email o contraseña incorrecta'})
     }
 
-    try {
-      var main = await sendEmail(); //Neo
+        try {
+        var main = await sendEmail(); //Neo
         } catch (err) {
         
         }
