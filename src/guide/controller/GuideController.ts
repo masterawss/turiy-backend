@@ -1,12 +1,12 @@
 import {Request, Response} from 'express';
 
 export default class GuideController {
-    // GET: /products
+    // GET: /guides
     index = (req: Request, res: Response) => {
         
     };
   
-    // GET: /products/:productId
+    // GET: /guides/:guidesId
     find = (req: Request, res: Response) => {
       
     };
