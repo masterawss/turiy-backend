@@ -10,16 +10,18 @@ dotenv.config();
 
 
 sgMail.setApiKey(`${process.env.SENDGRID_API_KEY}`);
-//sgMail.setApiKey("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");
+
 const msg = {
   to: 'leftmine05@gmail.com',
-  from: 'info@vitplanet.com', // Use the email address or domain you verified above
+  from: 'natalicontrerasluna@vitplanet.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
   text: 'Bienbenido a Turiy',
-  html: '<strong>Tenemos mucho por ver</strong>',
+  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong><br><p>El propósito del sitio Web es la promoción y divulgación de las actividades académicas, información de las carreras, vida universitaria y servicios Web. Está dirigido para estudiantes, docentes, personal administrativo y público en general.</p>',
 };
 
-export const sendEmail = async () => {
+export const sendEmail = async (correo_usuario: string) => {
+
+  msg.to=correo_usuario;
   try {
     await sgMail.send(msg);
   } catch (error: any) {
@@ -45,11 +47,7 @@ export const login = async (req: Request, res: Response) => {
         return res.status(401).json({message: 'Email o contraseña incorrecta'})
     }
 
-        try {
-        var main = await sendEmail(); //Neo
-        } catch (err) {
         
-        }
 
     // GENERAR TOKEN
     const token = createAuthToken({id: user.id})
@@ -89,7 +87,14 @@ export const registerGuide = async(req: Request, res: Response) => {
 
 
   const usuario=req.body;
-  const correo=usuario.form.email;
+  const envio_correo=usuario.form.email;
+  console.log("body d"+JSON.stringify(usuario.form.email));
+
+  try {
+    var main = await sendEmail(usuario.form.email); //Neo
+    } catch (err) {
+    
+    }
 
   const user = await UserModel.findOne({email: req.body.email});
     mercadopago.configure({
@@ -107,7 +112,7 @@ export const registerGuide = async(req: Request, res: Response) => {
       ],
      payer: {
       name: user.mail,
-      email: `${correo}`,
+      email: `${envio_correo}`,
      },
       back_urls: {
         success: process.env.WEB_URL+'/checkout-success',
