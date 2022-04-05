@@ -87,6 +87,10 @@ export const getUser = async(req: Request, res: Response) => {
 
 export const registerGuide = async(req: Request, res: Response) => {
 
+
+  const usuario=req.body;
+  const correo=usuario.form.email;
+
   const user = await UserModel.findOne({email: req.body.email});
     mercadopago.configure({
       access_token: process.env.MP_ACCESS_TOKEN!,
@@ -101,10 +105,10 @@ export const registerGuide = async(req: Request, res: Response) => {
           quantity: 1,
         },
       ],
-    // payer: {
-      //  name: user.mail,
-      //  email: user.mail,
-      // },
+     payer: {
+      name: user.mail,
+      email: `${correo}`,
+     },
       back_urls: {
         success: process.env.WEB_URL+'/checkout-success',
         failure: process.env.WEB_URL+'/checkout-failure',
