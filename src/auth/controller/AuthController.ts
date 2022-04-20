@@ -5,6 +5,15 @@ import {createAuthToken} from '../utils/TokenManager';
 import  mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'vittest', 
+  api_key: '864198498814525', 
+  api_secret: 'vT-ffxcPzr5eWO3EivluvD-Thyg' 
+});
+
+
 dotenv.config();
 
 
@@ -16,7 +25,7 @@ const msg = {
   from: 'natalicontrerasluna@vitplanet.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
   text: 'Bienbenido a Turiy',
-  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong><br><p>El propósito del sitio Web es la promoción y divulgación de las actividades académicas, información de las carreras, vida universitaria y servicios Web. Está dirigido para estudiantes, docentes, personal administrativo y público en general.</p>',
+  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong>',
 };
 
 export const sendEmail = async (correo_usuario: string) => {
@@ -87,48 +96,29 @@ export const registerGuide = async(req: Request, res: Response) => {
 
 
   const usuario=req.body;
-  const envio_correo=usuario.form.email;
-  console.log("body d"+JSON.stringify(usuario.form.email));
+  const envio_correo="leftmine05@gmail.com";
 
+  console.log(req.body);
+
+ // console.log("body d"+JSON.stringify(usuario.form.doc));
+
+  
+  // upload image here
+ // cloudinary.uploader.upload(data.image);
+
+ /*
   try {
-    var main = await sendEmail(usuario.form.email); //Neo
-    } catch (err) {
-    
-    }
+    const fileStr = usuario.form.doc.toString('utf8');
+    const uploadResponse = await cloudinary.uploader.upload(fileStr, {});
+    console.log(uploadResponse);
+    res.json({ msg: 'yaya' });
+    return;
+} catch (err) {
+    console.error(err);
+    res.status(500).json({ err: 'Something went wrong' });
+    return;
+}
+*/
 
-  const user = await UserModel.findOne({email: req.body.email});
-    mercadopago.configure({
-      access_token: process.env.MP_ACCESS_TOKEN!,
-    });
-
-    // Crea un objeto de preferencia
-    let preference = {
-      items: [
-        {
-          title: "Suscripción Turiy - Guide",
-          unit_price: 40,
-          quantity: 1,
-        },
-      ],
-     payer: {
-      name: user.mail,
-      email: `${envio_correo}`,
-     },
-      back_urls: {
-        success: process.env.WEB_URL+'/checkout-success',
-        failure: process.env.WEB_URL+'/checkout-failure',
-        pending: process.env.WEB_URL+'/checkout-pending'
-      },
-  };
-
-    mercadopago.preferences
-      .create(preference)
-      .then(function (response:any) {
-        console.log('RESPUESTA DE MERCADO PAGO', response);
-        res.json(response.response.init_point);
-        // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
-      })
-      .catch(function (error:any) {
-        console.log(error);
-      });
+ 
 }
