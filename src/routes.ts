@@ -10,7 +10,7 @@ import authMiddleware from './shared/middleware/authMiddleware';
 import requestValidator from './shared/middleware/requestValidatorMiddleware';
 import * as AuthSchema from './auth/Request/AuthSchema'
 import UserController from './user/controller/UserController';
-import ReviewsController from './reviews/controller/reviewsController';
+import ReviewsController from './reviews/controller/ReviewsController';
 
 const root = new RouteGroup('/', Router());
 
@@ -32,20 +32,20 @@ root.group('/', route => {
     // MADAY - PEDRO
     route.group('/places', place => {
         place.resource({handlers: new PlaceController()})
-        //Publication             
+        //Publication
     })   
 
     route.group('/publications', publications => {
         console.log('hace la peticion get')
         publications.resource({handlers: new PublicationsController()})
-        //Publication             
+        //Publication
     }) 
     // USER - GUIA -> MADAY - JULIO
     route.group('/users', user => {
         user.resource({handlers: new UserController()})
     })
     route.group('/reviews', review => {
-        review.resource({handlers: new ReviewsController()})
+        review.resource({handlers: new ReviewsController(), beforeHandlers: [authMiddleware]})
     })
 
 })

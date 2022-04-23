@@ -2,8 +2,10 @@ import { Types } from 'mongoose';
 
 export interface Reviews {
   id: ID;
-  user?: string;
+  user?: any;
+  guide?: any;
   review?: string;
+  star?: string;
 }
 
 export type ID = {
