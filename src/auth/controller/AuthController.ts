@@ -95,30 +95,54 @@ export const getUser = async(req: Request, res: Response) => {
 export const registerGuide = async(req: Request, res: Response) => {
 
 
-  const usuario=req.body;
-  const envio_correo="leftmine05@gmail.com";
+  const usuario=req.body.email;
+  
 
   console.log(req.body);
 
- // console.log("body d"+JSON.stringify(usuario.form.doc));
 
-  
-  // upload image here
- // cloudinary.uploader.upload(data.image);
-
- /*
   try {
-    const fileStr = usuario.form.doc.toString('utf8');
-    const uploadResponse = await cloudinary.uploader.upload(fileStr, {});
-    console.log(uploadResponse);
-    res.json({ msg: 'yaya' });
-    return;
-} catch (err) {
-    console.error(err);
-    res.status(500).json({ err: 'Something went wrong' });
-    return;
-}
-*/
+  //  var main = await sendEmail(usuario.form.email); //Neo
+  var main = await sendEmail(usuario); //Neo
+   
+  } catch (err) {
+    
+  }
 
- 
+  const user = await UserModel.findOne({email: req.body.email});
+    mercadopago.configure({
+      access_token: process.env.MP_ACCESS_TOKEN!,
+    });
+
+    // Crea un objeto de preferencia
+    let preference = {
+      items: [
+        {
+          title: "Suscripción Turiy - Guide",
+          unit_price: 40,
+          quantity: 1,
+        },
+      ],
+     payer: {
+      name:`${usuario}`,
+      //email: `${envio_correo}`,
+      email:`${usuario}`,
+     },
+      back_urls: {
+        success: process.env.WEB_URL+'/checkout-success',
+        failure: process.env.WEB_URL+'/checkout-failure',
+        pending: process.env.WEB_URL+'/checkout-pending'
+      },
+  };
+
+    mercadopago.preferences
+      .create(preference)
+      .then(function (response:any) {
+        console.log('RESPUESTA DE MERCADO PAGO', response);
+        res.json(response.response.init_point);
+        // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+      })
+      .catch(function (error:any) {
+        console.log(error);
+      });
 }
