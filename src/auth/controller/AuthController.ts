@@ -5,6 +5,15 @@ import {createAuthToken} from '../utils/TokenManager';
 import  mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'vittest', 
+  api_key: '864198498814525', 
+  api_secret: 'vT-ffxcPzr5eWO3EivluvD-Thyg' 
+});
+
+
 dotenv.config();
 
 
@@ -16,7 +25,7 @@ const msg = {
   from: 'natalicontrerasluna@vitplanet.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
   text: 'Bienbenido a Turiy',
-  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong><br><p>El propósito del sitio Web es la promoción y divulgación de las actividades académicas, información de las carreras, vida universitaria y servicios Web. Está dirigido para estudiantes, docentes, personal administrativo y público en general.</p>',
+  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong>',
 };
 
 export const sendEmail = async (correo_usuario: string) => {
@@ -86,15 +95,19 @@ export const getUser = async(req: Request, res: Response) => {
 export const registerGuide = async(req: Request, res: Response) => {
 
 
-  const usuario=req.body;
-  const envio_correo=usuario.form.email;
-  console.log("body d"+JSON.stringify(usuario.form.email));
+  const usuario=req.body.email;
+  
+
+  console.log(req.body);
+
 
   try {
-    var main = await sendEmail(usuario.form.email); //Neo
-    } catch (err) {
+  //  var main = await sendEmail(usuario.form.email); //Neo
+  var main = await sendEmail(usuario); //Neo
+   
+  } catch (err) {
     
-    }
+  }
 
   const user = await UserModel.findOne({email: req.body.email});
     mercadopago.configure({
@@ -111,8 +124,9 @@ export const registerGuide = async(req: Request, res: Response) => {
         },
       ],
      payer: {
-      name: user.mail,
-      email: `${envio_correo}`,
+      name:`${usuario}`,
+      //email: `${envio_correo}`,
+      email:`${usuario}`,
      },
       back_urls: {
         success: process.env.WEB_URL+'/checkout-success',
