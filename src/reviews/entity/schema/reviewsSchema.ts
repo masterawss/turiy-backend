@@ -7,6 +7,10 @@ export const reviewsSchema = new Schema<Reviews>({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  place: {
+    type: Schema.Types.ObjectId,
+    ref: 'Place',
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -14,7 +18,7 @@ export const reviewsSchema = new Schema<Reviews>({
   review: {
     type: String,
   },
-  star: {
+  stars: {
     type: String,
   }
 })

@@ -31,7 +31,7 @@ root.group('/', route => {
 
     // MADAY - PEDRO
     route.group('/places', place => {
-        place.resource({handlers: new PlaceController()})
+        place.resource({handlers: new PlaceController(), beforeHandlers: [authMiddleware]})
         //Publication
     })   
 

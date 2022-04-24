@@ -9,12 +9,16 @@ export default class ReviewsController {
 
         if(user){
             try {
+                console.log('DATA', req.body);
+
                 const review = await reviewsModel.create({
                     ...req.body,
                     user: user._id
                 });
-                const guide = UserModel.updateOne({_id: req.body.guide}, {$push: {reviews: review._id}});
-                res.send('review created')
+
+                const data = await reviewsModel.findById(review._id).populate('user')
+                // const guide = UserModel.updateOne({_id: req.body.guide}, {$push: {reviews: review._id}});
+                res.send({ message: 'Se registró correctamente', data });
             } catch (error) {
                 res.status(500).send('Ha ocurrido un error')
             }
@@ -23,9 +27,3 @@ export default class ReviewsController {
         }
     };
 }
-
-
-
-
-
-

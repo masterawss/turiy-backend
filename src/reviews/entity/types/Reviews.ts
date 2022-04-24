@@ -4,8 +4,9 @@ export interface Reviews {
   id: ID;
   user?: any;
   guide?: any;
+  place?: any;
   review?: string;
-  star?: string;
+  stars?: string;
 }
 
 export type ID = {
