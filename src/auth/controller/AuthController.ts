@@ -17,7 +17,7 @@ const msg = {
   from: 'maday.choque@gmail.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
   text: 'Bienvenido a Turiy',
-  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong>',
+  html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong><p>Hemos recibido tu postulacion como Guia en Tuiy</p><br><p>Pronto nos pondremos en contacto</p>',
 };
 
 export const sendEmail = async (correo_usuario: string) => {
