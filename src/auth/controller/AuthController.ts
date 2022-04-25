@@ -6,14 +6,6 @@ import  mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 var cloudinary = require('cloudinary').v2;
-
-cloudinary.config({ 
-  cloud_name: 'vittest', 
-  api_key: '864198498814525', 
-  api_secret: 'vT-ffxcPzr5eWO3EivluvD-Thyg' 
-});
-
-
 dotenv.config();
 
 
@@ -21,10 +13,10 @@ dotenv.config();
 sgMail.setApiKey(`${process.env.SENDGRID_API_KEY}`);
 
 const msg = {
-  to: 'leftmine05@gmail.com',
-  from: 'natalicontrerasluna@vitplanet.com', // Use the email address or domain you verified above
+  to: 'maday.choque@gmail.com',
+  from: 'maday.choque@gmail.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
-  text: 'Bienbenido a Turiy',
+  text: 'Bienvenido a Turiy',
   html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong>',
 };
 
