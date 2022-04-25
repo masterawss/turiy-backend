@@ -22,7 +22,7 @@ sgMail.setApiKey(`${process.env.SENDGRID_API_KEY}`);
 
 const msg = {
   to: 'leftmine05@gmail.com',
-  from: 'natalicontrerasluna@vitplanet.com', // Use the email address or domain you verified above
+  from: 'maday.choque@gmail.com', // Use the email address or domain you verified above
   subject: 'Notificacion de Turiy',
   text: 'Bienbenido a Turiy',
   html: '<h1>Somos Turiy</h1><strong>Tenemos mucho por ver</strong>',
@@ -55,8 +55,6 @@ export const login = async (req: Request, res: Response) => {
         console.log('USUARIO', is_valid_password);
         return res.status(401).json({message: 'Email o contraseña incorrecta'})
     }
-
-        
 
     // GENERAR TOKEN
     const token = createAuthToken({id: user.id})
