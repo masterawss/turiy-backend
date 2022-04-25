@@ -4,7 +4,10 @@ import reviewsModel from '../../reviews/entity/models/ReviewsModel'
 
 export default class UserController {
     find = async (req: Request, res: Response, next: NextFunction) => {
-        const reviews = await reviewsModel.find({userId: req.params.userId })
+        const reviews = await reviewsModel.find({guide: req.params.userId })
+                        .populate("user")
+        console.log('REVIEWS', reviews);
+        
         const user = await User
             .findById(req.params.userId)
         res.json({user,reviews})

@@ -1,15 +1,19 @@
 import { NextFunction, Request, Response } from 'express';
 import placeModel from '../entity/models/placeModel';
-import publicationsModel from '../../publications/entity/models/publicationsModel'
+import ReviewsModel from '../../reviews/entity/models/ReviewsModel';
 
 export default class PlaceController {
     find = async (req: Request, res: Response, next: NextFunction) => {
+
+        const user:any = req.user
+
         const id = req.params.placeId;
-        const publications = await publicationsModel.find({placeId: id });
+        const reviews = await ReviewsModel.find({place: id }).populate('user');
         const place = await placeModel
                         .findById(id)
                         .populate("guides")
-        res.json({place, publications})
+        const isAlreadyVisited = await ReviewsModel.findOne({user: user._id, place: id})
+        res.json({place, reviews, isAlreadyVisited: !!isAlreadyVisited})
     };
 
     // findPublicaions = async (req: Request, res: Response, next: NextFunction) => {

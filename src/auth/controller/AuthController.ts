@@ -48,8 +48,6 @@ export const login = async (req: Request, res: Response) => {
         return res.status(401).json({message: 'Email o contraseña incorrecta'})
     }
 
-        
-
     // GENERAR TOKEN
     const token = createAuthToken({id: user.id})
     res.status(200).json({
